@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0b";
+        const string _version = "V3.0c";
 
         [SerializeField]
         bool masterOnly = false;
@@ -171,8 +171,8 @@ namespace HoshinoLabs.Udon
             _screen1 = transform.Find("Screen/Video").gameObject;
             _screen1Quad1 = transform.Find("Screen/Video/Quad").gameObject;
             if (mirrorReflection)
-                _screen1Quad1.layer = 5;
-            _screen1Quad1.transform.position = _quad.transform.position;
+                _screen1Quad1.layer = 4;
+            _screen1Quad1.transform.position = _screen1Quad1.transform.localPosition + _quad.transform.position;
             _screen1Quad1.transform.rotation = _quad.transform.rotation;
             _screen1Quad1.transform.localScale = _quad.transform.localScale;
             _screen1Quad2 = transform.Find("Screen/Video/Quad (1)").gameObject;
@@ -185,8 +185,8 @@ namespace HoshinoLabs.Udon
             _screen2 = transform.Find("Screen/Live").gameObject;
             _screen2Quad1 = transform.Find("Screen/Live/Quad").gameObject;
             if (mirrorReflection)
-                _screen2Quad1.layer = 5;
-            _screen2Quad1.transform.position = _quad.transform.position;
+                _screen2Quad1.layer = 4;
+            _screen2Quad1.transform.position = _screen2Quad1.transform.localPosition + _quad.transform.position;
             _screen2Quad1.transform.rotation = _quad.transform.rotation;
             _screen2Quad1.transform.localScale = _quad.transform.localScale;
             _screen2Quad2 = transform.Find("Screen/Live/Quad (1)").gameObject;

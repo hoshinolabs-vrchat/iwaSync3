@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 8463750585310921207}
   - component: {fileID: 8463750585310921210}
   - component: {fileID: 8463750585310921205}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8463750585310921206}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.005}
   m_LocalScale: {x: 2.88, y: 1.62, z: 1}
   m_Children: []
   m_Father: {fileID: 8463750585565915339}
@@ -4369,7 +4369,7 @@ GameObject:
   - component: {fileID: 8463750587006408092}
   - component: {fileID: 8463750587006408095}
   - component: {fileID: 8463750587006408094}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Quad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4384,7 +4384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8463750587006408088}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.005}
   m_LocalScale: {x: 2.88, y: 1.62, z: 1}
   m_Children: []
   m_Father: {fileID: 8463750585546684862}
