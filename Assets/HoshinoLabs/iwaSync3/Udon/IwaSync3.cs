@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0a2";
+        const string _version = "V3.0b";
 
         [SerializeField]
         bool masterOnly = false;
@@ -181,7 +181,7 @@ namespace HoshinoLabs.Udon
                 _screen1Quad2.layer = 18;
             _screen1Quad2.transform.position = _quad.transform.position;
             _screen1Quad2.transform.rotation = _quad.transform.rotation;
-            _screen1Quad2.transform.localScale = _quad.transform.localScale;
+            _screen1Quad2.transform.localScale = Vector3.Scale(_quad.transform.localScale, new Vector3(-1f, 1f, 1f));
             _screen2 = transform.Find("Screen/Live").gameObject;
             _screen2Quad1 = transform.Find("Screen/Live/Quad").gameObject;
             if (mirrorReflection)
@@ -195,7 +195,7 @@ namespace HoshinoLabs.Udon
                 _screen2Quad2.layer = 18;
             _screen2Quad2.transform.position = _quad.transform.position;
             _screen2Quad2.transform.rotation = _quad.transform.rotation;
-            _screen2Quad2.transform.localScale = _quad.transform.localScale;
+            _screen2Quad2.transform.localScale = Vector3.Scale(_quad.transform.localScale, new Vector3(-1f, 1f, 1f));
 
             _normalColor = _addressInput.selectionColor;
             _disabledColor = _addressInput.colors.disabledColor;
