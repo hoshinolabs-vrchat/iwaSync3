@@ -20,12 +20,14 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0";
+        const string _version = "V3.0a2";
 
         [SerializeField]
         bool masterOnly = false;
         [SerializeField]
         bool allowSeeking = true;
+        [SerializeField]
+        bool mirrorReflection = false;
 
         BaseVRCVideoPlayer _player1;
         BaseVRCVideoPlayer _player2;
@@ -63,8 +65,13 @@ namespace HoshinoLabs.Udon
         Button _offButton;
         Text _offText;
 
+        GameObject _quad;
         GameObject _screen1;
+        GameObject _screen1Quad1;
+        GameObject _screen1Quad2;
         GameObject _screen2;
+        GameObject _screen2Quad1;
+        GameObject _screen2Quad2;
 
         Color _normalColor;
         Color _disabledColor;
@@ -160,8 +167,35 @@ namespace HoshinoLabs.Udon
             _offButton = transform.Find("Control/Panel (1)/PowerOff/Button").GetComponentInChildren<Button>();
             _offText = transform.Find("Control/Panel (1)/PowerOff/Button/Text").GetComponentInChildren<Text>();
 
+            _quad = transform.Find("Screen/Quad").gameObject;
             _screen1 = transform.Find("Screen/Video").gameObject;
+            _screen1Quad1 = transform.Find("Screen/Video/Quad").gameObject;
+            if (mirrorReflection)
+                _screen1Quad1.layer = 5;
+            _screen1Quad1.transform.position = _quad.transform.position;
+            _screen1Quad1.transform.rotation = _quad.transform.rotation;
+            _screen1Quad1.transform.localScale = _quad.transform.localScale;
+            _screen1Quad2 = transform.Find("Screen/Video/Quad (1)").gameObject;
+            _screen1Quad2.SetActive(mirrorReflection);
+            if (mirrorReflection)
+                _screen1Quad2.layer = 18;
+            _screen1Quad2.transform.position = _quad.transform.position;
+            _screen1Quad2.transform.rotation = _quad.transform.rotation;
+            _screen1Quad2.transform.localScale = _quad.transform.localScale;
             _screen2 = transform.Find("Screen/Live").gameObject;
+            _screen2Quad1 = transform.Find("Screen/Live/Quad").gameObject;
+            if (mirrorReflection)
+                _screen2Quad1.layer = 5;
+            _screen2Quad1.transform.position = _quad.transform.position;
+            _screen2Quad1.transform.rotation = _quad.transform.rotation;
+            _screen2Quad1.transform.localScale = _quad.transform.localScale;
+            _screen2Quad2 = transform.Find("Screen/Live/Quad (1)").gameObject;
+            _screen2Quad2.SetActive(mirrorReflection);
+            if (mirrorReflection)
+                _screen2Quad2.layer = 18;
+            _screen2Quad2.transform.position = _quad.transform.position;
+            _screen2Quad2.transform.rotation = _quad.transform.rotation;
+            _screen2Quad2.transform.localScale = _quad.transform.localScale;
 
             _normalColor = _addressInput.selectionColor;
             _disabledColor = _addressInput.colors.disabledColor;
@@ -514,6 +548,7 @@ namespace HoshinoLabs.Udon
             _sync.SetActive((IsStatus(_status_play) || IsStatus(_status_pause)) && !IsStatus(_status_error));
             _offButton.interactable = (masterOnly && IsMaster()) || !masterOnly;
             _offText.color = _offButton.interactable ? _normalColor : _disabledColor;
+            _quad.SetActive(!IsStatus(_status_play));
             _screen1.SetActive(IsStatus(_status_video) && IsStatus(_status_play));
             _screen2.SetActive(IsStatus(_status_live) && IsStatus(_status_play));
         }
