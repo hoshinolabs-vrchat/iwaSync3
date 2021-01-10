@@ -58,3 +58,12 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# VRC
+/[Aa]ssets/Udon*
+/[Aa]ssets/VRChat Examples*
+/[Aa]ssets/VRCSDK*
+/[Pp]ackages/com.vrchat.vrcsdk3/
+/[Aa]ssets/Gizmos/UdonSharp*
+/[Aa]ssets/UdonSharp*
+/[Aa]ssets/SerializedUdonPrograms*
+
