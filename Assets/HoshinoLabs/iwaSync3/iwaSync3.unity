@@ -351,7 +351,7 @@ PrefabInstance:
         type: 3}
       propertyPath: serializedProgramAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 86b48e2c2eb42fc408f66b934c99bc32,
+      objectReference: {fileID: 11400000, guid: 3fd1bf7006b1ba04a93c2204ea273ad0,
         type: 2}
     - target: {fileID: 6759095419728963412, guid: 8894fa7e4588a5c4fab98453e558847d,
         type: 3}
@@ -713,5 +713,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: iwaSync3
       objectReference: {fileID: 0}
+    - target: {fileID: 8463750585492152243, guid: 38cf07f13826c75489badbc42ae334f8,
+        type: 3}
+      propertyPath: serializedProgramAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: dc035b3f319c3964e952fc7d2cb76f96,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 38cf07f13826c75489badbc42ae334f8, type: 3}

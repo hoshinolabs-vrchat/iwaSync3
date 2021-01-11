@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0c";
+        const string _version = "V3.0d";
 
         [SerializeField]
         bool masterOnly = false;
@@ -73,6 +73,7 @@ namespace HoshinoLabs.Udon
         GameObject _screen2Quad1;
         GameObject _screen2Quad2;
 
+        bool _dummyScreen;
         Color _normalColor;
         Color _disabledColor;
 
@@ -197,6 +198,7 @@ namespace HoshinoLabs.Udon
             _screen2Quad2.transform.rotation = _quad.transform.rotation;
             _screen2Quad2.transform.localScale = Vector3.Scale(_quad.transform.localScale, new Vector3(-1f, 1f, 1f));
 
+            _dummyScreen = _quad.activeSelf;
             _normalColor = _addressInput.selectionColor;
             _disabledColor = _addressInput.colors.disabledColor;
 
@@ -229,6 +231,14 @@ namespace HoshinoLabs.Udon
 #if !UNITY_EDITOR
             Networking.SetOwner(Networking.LocalPlayer, gameObject);
 #endif
+        }
+
+        public override void OnOwnershipTransferred()
+        {
+#if UDONCONSOLE
+            DebugLog($"ownership transferred.");
+#endif
+            ValidateView();
         }
 
         public override void OnPlayerJoined(VRCPlayerApi player)
@@ -548,7 +558,7 @@ namespace HoshinoLabs.Udon
             _sync.SetActive((IsStatus(_status_play) || IsStatus(_status_pause)) && !IsStatus(_status_error));
             _offButton.interactable = (masterOnly && IsMaster()) || !masterOnly;
             _offText.color = _offButton.interactable ? _normalColor : _disabledColor;
-            _quad.SetActive(!IsStatus(_status_play));
+            _quad.SetActive(IsStatus(_status_play) ? false : _dummyScreen);
             _screen1.SetActive(IsStatus(_status_video) && IsStatus(_status_play));
             _screen2.SetActive(IsStatus(_status_live) && IsStatus(_status_play));
         }
