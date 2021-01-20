@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0d";
+        const string _version = "V3.0e";
 
         [SerializeField]
         bool masterOnly = false;
