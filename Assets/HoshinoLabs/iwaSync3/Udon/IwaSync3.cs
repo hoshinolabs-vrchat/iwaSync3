@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0f";
+        const string _version = "V3.0g";
 
         [SerializeField]
         bool masterOnly = false;
@@ -337,6 +337,7 @@ namespace HoshinoLabs.Udon
         {
             DebugLog($"Trigger a video player power-on event.");
             TakeOwnership();
+            _urlSync = VRCUrl.Empty;
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOnVideo));
         }
 
@@ -346,7 +347,6 @@ namespace HoshinoLabs.Udon
             enabled = true;
             _status = _status & ~_status_off | _status_on | _status_video | _status_stop;
             _player = _player1;
-            _urlSync = VRCUrl.Empty;
             ValidateView();
         }
 
@@ -354,6 +354,7 @@ namespace HoshinoLabs.Udon
         {
             DebugLog($"Trigger a live player power-on event.");
             TakeOwnership();
+            _urlSync = VRCUrl.Empty;
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOnLive));
         }
 
@@ -363,7 +364,6 @@ namespace HoshinoLabs.Udon
             enabled = true;
             _status = _status & ~_status_off | _status_on | _status_live | _status_stop;
             _player = _player2;
-            _urlSync = VRCUrl.Empty;
             ValidateView();
         }
 
@@ -420,6 +420,8 @@ namespace HoshinoLabs.Udon
 
         public void OnURLChanged()
         {
+            if (string.IsNullOrEmpty(_addressInput.GetUrl().Get()))
+                return;
             DebugLog($"The URL has changed to `{_addressInput.GetUrl().Get()}`. Next serial is {_serialSync + 1}.");
             _urlSync = _addressInput.GetUrl();
             _serialSync++;
