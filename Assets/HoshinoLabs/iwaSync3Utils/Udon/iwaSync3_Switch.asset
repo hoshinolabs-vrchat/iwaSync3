@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c333ccfdd0cbdbc4ca30cef2dd6e6b9b, type: 3}
   m_Name: iwaSync3_Switch
   m_EditorClassIdentifier: 
-  serializedUdonProgramAsset: {fileID: 11400000, guid: d21a7e2f028a498449c29891908b2b6e,
+  serializedUdonProgramAsset: {fileID: 11400000, guid: a522d82fe79cb73498a8ef87f34d1852,
     type: 2}
   udonAssembly: 
   assemblyError: 

@@ -20,7 +20,7 @@ namespace HoshinoLabs.Udon
 #endif
 
         const string _appname = "iwaSync3";
-        const string _version = "V3.0e";
+        const string _version = "V3.0f";
 
         [SerializeField]
         bool masterOnly = false;
@@ -108,7 +108,7 @@ namespace HoshinoLabs.Udon
             if (!GameObject.Find(nameof(UConsole)))
                 return;
             _c = GameObject.Find(nameof(UConsole)).GetComponent<UConsole>();
-            _c.AddFilter(_appname, null, "iS3");
+            _c.AddFilter(_appname, transform.Find("Control/Panel/Icon").GetComponent<Image>().sprite, string.Empty);
         }
 #endif
 
@@ -225,9 +225,7 @@ namespace HoshinoLabs.Udon
 
         void TakeOwnership()
         {
-#if UDONCONSOLE
             DebugLog($"Request of ownership.");
-#endif
 #if !UNITY_EDITOR
             Networking.SetOwner(Networking.LocalPlayer, gameObject);
 #endif
@@ -235,22 +233,16 @@ namespace HoshinoLabs.Udon
 
         public override void OnOwnershipTransferred()
         {
-#if UDONCONSOLE
             DebugLog($"ownership transferred.");
-#endif
             ValidateView();
         }
 
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
-#if UDONCONSOLE
             DebugLog($"`{player.displayName}` has joined room.");
-#endif
             if (IsMaster())
             {
-#if UDONCONSOLE
                 DebugLog($"I'm room master.");
-#endif
                 if (masterOnly)
                     SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnLock));
                 else
@@ -258,9 +250,7 @@ namespace HoshinoLabs.Udon
             }
             if (IsOwner())
             {
-#if UDONCONSOLE
                 DebugLog($"I'm room owner.");
-#endif
                 if (IsStatus(_status_on) && IsStatus(_status_video))
                     SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOnVideo));
                 if (IsStatus(_status_on) && IsStatus(_status_live))
@@ -272,9 +262,7 @@ namespace HoshinoLabs.Udon
 
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
-#if UDONCONSOLE
             DebugLog($"`{player.displayName}` has left room.");
-#endif
             ValidateView();
         }
 
@@ -282,17 +270,13 @@ namespace HoshinoLabs.Udon
         {
             if (!IsOwner())
                 return;
-#if UDONCONSOLE
             DebugLog($"The video has reached the end.");
-#endif
             PowerOff();
         }
 
         public override void OnVideoError(VideoError videoError)
         {
-#if UDONCONSOLE
             DebugLog($"There was a `{videoError}` error in the video.");
-#endif
             _status = _status | _status_error;
             _messageText.text = $"Error:{videoError}";
             ValidateView();
@@ -302,9 +286,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"The video is ready.");
-#endif
             _status = _status & ~_status_fetch | _status_play;
             if (float.IsInfinity(_player.GetDuration()))
                 _status = _status | _status_stream;
@@ -327,91 +309,73 @@ namespace HoshinoLabs.Udon
 
         public void Lock()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a lock event.");
-#endif
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnLock));
         }
 
         public void OnLock()
         {
-#if UDONCONSOLE
             DebugLog($"Received a lock event.");
-#endif
             masterOnly = true;
             ValidateView();
         }
 
         public void UnLock()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a unlock event.");
-#endif
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnUnLock));
         }
 
         public void OnUnLock()
         {
-#if UDONCONSOLE
             DebugLog($"Received a unlock event.");
-#endif
             masterOnly = false;
             ValidateView();
         }
 
         public void PowerOnVideo()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a video player power-on event.");
-#endif
             TakeOwnership();
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOnVideo));
         }
 
         public void OnPowerOnVideo()
         {
-#if UDONCONSOLE
             DebugLog($"Received a video player power-on event.");
-#endif
             enabled = true;
             _status = _status & ~_status_off | _status_on | _status_video | _status_stop;
             _player = _player1;
+            _urlSync = VRCUrl.Empty;
             ValidateView();
         }
 
         public void PowerOnLive()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a live player power-on event.");
-#endif
             TakeOwnership();
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOnLive));
         }
 
         public void OnPowerOnLive()
         {
-#if UDONCONSOLE
             DebugLog($"Received a live player power-on event.");
-#endif
             enabled = true;
             _status = _status & ~_status_off | _status_on | _status_live | _status_stop;
             _player = _player2;
+            _urlSync = VRCUrl.Empty;
             ValidateView();
         }
 
         public void PowerOff()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a power-off event.");
-#endif
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPowerOff));
         }
 
         public void OnPowerOff()
         {
-#if UDONCONSOLE
             DebugLog($"Received a power-off event.");
-#endif
             enabled = false;
             _status = _status_off | _status_stop;
             _player1.Stop();
@@ -424,17 +388,13 @@ namespace HoshinoLabs.Udon
 
         public void OnProgressBeginDrag()
         {
-#if UDONCONSOLE
             DebugLog($"Progress has started dragging.");
-#endif
             _progressDrag = true;
         }
 
         public void OnProgressEndDrag()
         {
-#if UDONCONSOLE
             DebugLog($"Progress drag is finished.");
-#endif
             _progressDrag = false;
         }
 
@@ -442,9 +402,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_progressDrag)
                 return;
-#if UDONCONSOLE
             DebugLog($"Progress value has changed.");
-#endif
             var offset = _player.GetDuration() * _progressSlider.value;
             SetOffsetTime(offset);
             SetElapsedTime(_timeSync);
@@ -454,9 +412,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"Set the progress time to {(float)Networking.GetServerTimeInSeconds() - time}.");
-#endif
             _time = time;
             _player.SetTime((float)Networking.GetServerTimeInSeconds() - time);
             ValidateView();
@@ -464,9 +420,7 @@ namespace HoshinoLabs.Udon
 
         public void OnURLChanged()
         {
-#if UDONCONSOLE
             DebugLog($"The URL has changed to `{_addressInput.GetUrl().Get()}`. Next serial is {_serialSync + 1}.");
-#endif
             _urlSync = _addressInput.GetUrl();
             _serialSync++;
             SetOffsetTime(GetOffsetTime(_urlSync.Get()));
@@ -504,9 +458,7 @@ namespace HoshinoLabs.Udon
 
         void SetOffsetTime(float offset)
         {
-#if UDONCONSOLE
             DebugLog($"Set the offset time to {offset}.");
-#endif
             _timeSync = (float)Networking.GetServerTimeInSeconds() - offset;
         }
 
@@ -514,9 +466,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"Load the video with the URL `{url.Get()}` and set the serial to {serial}.");
-#endif
             _status = _status & ~_status_stop | _status_fetch;
             _url = url;
             _serial = serial;
@@ -565,9 +515,7 @@ namespace HoshinoLabs.Udon
 
         public void Pause()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a pause event.");
-#endif
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPause));
         }
 
@@ -575,9 +523,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"Received a pause event.");
-#endif
             _status = _status | _status_pause;
             SetOffsetTime(_player.GetTime());
             _player.Pause();
@@ -586,9 +532,7 @@ namespace HoshinoLabs.Udon
 
         public void Play()
         {
-#if UDONCONSOLE
             DebugLog($"Trigger a play event.");
-#endif
             SendCustomNetworkEvent(NetworkEventTarget.All, nameof(OnPlay));
         }
 
@@ -596,9 +540,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"Received a play event.");
-#endif
             _status = _status & ~_status_pause;
             SetOffsetTime(_player.GetTime());
             _player.Play();
@@ -609,9 +551,7 @@ namespace HoshinoLabs.Udon
         {
             if (!_player)
                 return;
-#if UDONCONSOLE
             DebugLog($"Trigger a sync event.");
-#endif
             _status = _status & ~_status_play & ~_status_pause | _status_stop;
             LoadURL(_urlSync, _serialSync);
         }
